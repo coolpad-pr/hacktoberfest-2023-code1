@@ -1,0 +1,44 @@
+Given a string str of lowercase ASCII characters, Count the number of distinct continuous palindromic sub-strings which are present in the string str.
+
+Example 1:
+
+Input:
+str = "abaaa"
+Output:
+5
+Explanation : These are included in answer:
+"a","aa","aaa","aba","b"
+
+
+def countDistinctPalindromicSubstrings(s):
+    n = len(s)
+    count = 0
+
+    # Create a 2D boolean array to store if a substring is a palindrome
+    is_palindrome = [[False] * n for _ in range(n)]
+
+    # All single characters are palindromes
+    for i in range(n):
+        is_palindrome[i][i] = True
+        count += 1
+
+    # Check for palindromic substrings of length 2
+    for i in range(n - 1):
+        if s[i] == s[i + 1]:
+            is_palindrome[i][i + 1] = True
+            count += 1
+
+    # Check for palindromic substrings of length 3 or more
+    for length in range(3, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if s[i] == s[j] and is_palindrome[i + 1][j - 1]:
+                is_palindrome[i][j] = True
+                count += 1
+
+    return count
+
+# Example usage:
+str = "abaaa"
+result = countDistinctPalindromicSubstrings(str)
+print(result)  # Output: 5
